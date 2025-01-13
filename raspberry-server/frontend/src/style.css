@@ -1,7 +1,9 @@
 html {
-    background-color: rgba(27, 38, 54, 1);
+    background: linear-gradient(to bottom right, rgb(127, 0, 138), rgb(50, 0, 54));
     text-align: center;
     color: white;
+    height: 100%;
+    vertical-align: middle;
 }
 
 body {

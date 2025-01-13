@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 )
 
 // App struct
@@ -23,12 +22,12 @@ func (a *App) startup(ctx context.Context) {
 	a.server = CreateServer()
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
-func (a *App) StartServer() {
+func (a *App) StartServer(portNumber int, batchSize int) {
+	a.server.Config = ServerConfig{
+		PortNumber: portNumber,
+		BatchSize:  batchSize,
+	}
+	a.server.SendStringQueue = make(chan string, batchSize)
 	go a.server.Serve()
 }
 

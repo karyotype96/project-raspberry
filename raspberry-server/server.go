@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
-	"strconv"
-	"strings"
 	"sync"
 )
 
@@ -41,43 +38,6 @@ func CreateServer() *Server {
 	serverConfig := ServerConfig{}
 	serverConfig.PortNumber = DEFAULT_PORT_NUMBER
 	serverConfig.BatchSize = DEFAULT_BATCH_SIZE
-
-	conf, err := os.ReadFile(CONFIG_FILENAME)
-
-	if err != nil {
-		// config file does not exist, therefore create one
-		file, err := os.Create(CONFIG_FILENAME)
-		if err != nil {
-			log.Fatal("Initialization failed, could not create config file")
-		}
-
-		fmt.Fprintf(file, "%s:%d\n%s:%d", CONFIG_NAME_PORT_NUMBER, DEFAULT_PORT_NUMBER, CONFIG_NAME_BATCH_SIZE, DEFAULT_BATCH_SIZE)
-	} else {
-		configLines := strings.Split(string(conf), "\n")
-		for _, line := range configLines {
-			colonSplitLine := strings.Split(line, ":")
-			configKey, configValue := colonSplitLine[0], colonSplitLine[1]
-
-			if configKey == CONFIG_NAME_PORT_NUMBER {
-				portNumber, err := strconv.Atoi(configValue)
-				if err != nil {
-					log.Fatal("Initialization failed, port number is not an integer")
-				}
-				if portNumber > MAX_PORT_NUMBER {
-					log.Fatal("Initialization failed, port number should not be higher than 65535")
-				}
-				serverConfig.PortNumber = portNumber
-			}
-			if configKey == CONFIG_NAME_BATCH_SIZE {
-				batchSize, err := strconv.Atoi(configValue)
-				if err != nil {
-					log.Fatal("Initialization failed, batch size is not an integer")
-				}
-
-				serverConfig.BatchSize = batchSize
-			}
-		}
-	}
 
 	server := Server{}
 

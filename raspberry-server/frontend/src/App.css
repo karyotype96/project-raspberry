@@ -2,6 +2,7 @@
     height: 100vh;
     text-align: center;
     margin-top: 20vh;
+    vertical-align: middle;
 }
 
 #logo {
@@ -14,6 +15,16 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-origin: content-box;
+}
+
+.configTable {
+    margin: auto;
+    margin-top: 10%;
+}
+
+.numberBox {
+    margin: 5px;
+    height: 20px;
 }
 
 .result {
