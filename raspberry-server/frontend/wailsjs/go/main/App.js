@@ -5,3 +5,11 @@
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
+
+export function StartServer() {
+  return window['go']['main']['App']['StartServer']();
+}
+
+export function StopServer() {
+  return window['go']['main']['App']['StopServer']();
+}
