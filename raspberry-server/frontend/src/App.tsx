@@ -19,11 +19,11 @@ function App() {
     return (
         <div id="App">
             <div id="input" className="input-box">
-                <table>
+                <table className='configTable'>
                     <tbody>
                         <tr>
                             <td>
-                                <button id="toggleServer" className="toggleServer" onClick={toggleServerState}>{serverRunning ? "Stop Server" : "Start Server"}</button>
+                                <button id="toggleServer" className="tableButton" onClick={toggleServerState}>{serverRunning ? "Stop Server" : "Start Server"}</button>
                             </td>
                         </tr>
                     </tbody>

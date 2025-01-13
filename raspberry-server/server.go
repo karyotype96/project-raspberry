@@ -31,7 +31,8 @@ type Server struct {
 	mu                *sync.Mutex
 	listener          net.Listener
 	Config            ServerConfig
-	ConnectionPool    map[string]net.Conn
+	SendStringQueue   chan string
+	ConnectionPool    map[string]*net.Conn
 	KillSignalChannel chan struct{}
 	QuitChannel       chan struct{}
 }
@@ -82,7 +83,8 @@ func CreateServer() *Server {
 
 	server.mu = &sync.Mutex{}
 	server.Config = serverConfig
-	server.ConnectionPool = make(map[string]net.Conn)
+	server.SendStringQueue = make(chan string)
+	server.ConnectionPool = make(map[string]*net.Conn)
 	server.KillSignalChannel = make(chan struct{})
 	server.QuitChannel = make(chan struct{})
 
@@ -102,6 +104,17 @@ func (s *Server) Serve() {
 		log.Println("Closing connection...")
 		s.flick()
 		s.QuitChannel <- struct{}{}
+	}()
+
+	go func() {
+		for {
+			msg, ok := <-s.SendStringQueue
+			if ok {
+				for _, connection := range s.ConnectionPool {
+					(*connection).Write([]byte(msg))
+				}
+			}
+		}
 	}()
 
 	for {
@@ -127,6 +140,15 @@ func (s *Server) Serve() {
 
 func (s *Server) handleConnection(conn net.Conn) {
 	buffer := make([]byte, 1024)
+	s.mu.Lock()
+	s.ConnectionPool[conn.RemoteAddr().String()] = &conn
+	s.mu.Unlock()
+
+	defer func() {
+		s.mu.Lock()
+		delete(s.ConnectionPool, conn.RemoteAddr().String())
+		s.mu.Unlock()
+	}()
 
 	for {
 		_, err := conn.Read(buffer)
@@ -139,7 +161,7 @@ func (s *Server) handleConnection(conn net.Conn) {
 			log.Printf("Stopping connection %s\n", conn.RemoteAddr().String())
 			break
 		} else {
-			conn.Write([]byte("Message sent: " + string(buffer)))
+			s.SendStringQueue <- string(buffer)
 		}
 	}
 }
