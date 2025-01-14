@@ -63,3 +63,15 @@ func (a *App) GetSignal() bool {
 	<-a.c.SignalChannel
 	return true
 }
+
+func (a *App) SendSignal() string {
+	fullMessage := fmt.Sprintf("%s\n%s\n%s", SIGNAL_HEADER, (*a.c).Username, SIGNAL_HEADER)
+
+	_, err := (*a.c).Conn.Write([]byte(fullMessage))
+	if err != nil {
+		log.Printf("Failed to send signal: %v\n", err)
+		return ""
+	}
+
+	return "sent"
+}
