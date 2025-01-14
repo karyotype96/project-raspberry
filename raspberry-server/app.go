@@ -27,6 +27,7 @@ func (a *App) StartServer(portNumber int, batchSize int) {
 		PortNumber: portNumber,
 		BatchSize:  batchSize,
 	}
+
 	a.server.SendStringQueue = make(chan string, batchSize)
 	go a.server.Serve()
 }
