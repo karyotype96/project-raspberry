@@ -57,9 +57,9 @@ func (c *Connector) Connect(ipAddress string, portNumber int) error {
 }
 
 func (c *Connector) handleConnection() {
-	buffer := make([]byte, 1024)
-
 	for {
+		buffer := make([]byte, 1024)
+
 		_, err := c.Conn.Read(buffer)
 		if err == net.ErrClosed {
 			log.Printf("Connection closed: %v\n", err)

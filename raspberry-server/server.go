@@ -9,10 +9,6 @@ import (
 
 // default settings
 const (
-	CONFIG_FILENAME         = "server.conf"
-	CONFIG_NAME_PORT_NUMBER = "PORT_NUMBER"
-	CONFIG_NAME_BATCH_SIZE  = "BATCH_SIZE"
-
 	DEFAULT_PORT_NUMBER = 20000
 	DEFAULT_BATCH_SIZE  = 10
 
@@ -99,7 +95,6 @@ func (s *Server) Serve() {
 }
 
 func (s *Server) handleConnection(conn net.Conn) {
-	buffer := make([]byte, 1024)
 	s.mu.Lock()
 	s.ConnectionPool[conn.RemoteAddr().String()] = &conn
 	s.mu.Unlock()
@@ -111,6 +106,7 @@ func (s *Server) handleConnection(conn net.Conn) {
 	}()
 
 	for {
+		buffer := make([]byte, 1024)
 		_, err := conn.Read(buffer)
 		if err != nil {
 			log.Println("Data could not be read to buffer...")
