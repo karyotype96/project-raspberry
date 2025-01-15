@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	MESSAGE_HEADER = "--MESSAGE--"
-	SIGNAL_HEADER  = "--SIGNAL--"
+	MESSAGE_HEADER = "###MESSAGE###"
+	SIGNAL_HEADER  = "###SIGNAL###"
 )
 
 type Connector struct {
@@ -70,9 +70,10 @@ func (c *Connector) handleConnection() {
 			continue
 		}
 
-		received := strings.Split("\n", string(buffer))
+		received := strings.Split(string(buffer), "\n")
+		log.Printf("Received message of length %d: %v\n", len(received), received)
 
-		if len(received) != 3 {
+		if len(received) < 3 {
 			log.Printf("Received invalid message...")
 			continue
 		}

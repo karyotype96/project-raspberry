@@ -44,7 +44,7 @@ func (a *App) StopClient() {
 func (a *App) GetMessage() string {
 	msg := <-(*a.c).MessageChannel
 
-	return fmt.Sprintf("%s\n%s\n", msg.sender, msg.payload)
+	return fmt.Sprintf("%s\n%s", msg.sender, msg.payload)
 }
 
 func (a *App) SendMessage(msg string) string {

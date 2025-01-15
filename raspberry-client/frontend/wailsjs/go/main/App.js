@@ -14,6 +14,10 @@ export function SendMessage(arg1) {
   return window['go']['main']['App']['SendMessage'](arg1);
 }
 
+export function SendSignal() {
+  return window['go']['main']['App']['SendSignal']();
+}
+
 export function StartClient(arg1, arg2, arg3) {
   return window['go']['main']['App']['StartClient'](arg1, arg2, arg3);
 }

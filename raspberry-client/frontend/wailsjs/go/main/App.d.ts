@@ -7,6 +7,8 @@ export function GetSignal():Promise<boolean>;
 
 export function SendMessage(arg1:string):Promise<string>;
 
+export function SendSignal():Promise<string>;
+
 export function StartClient(arg1:string,arg2:string,arg3:number):Promise<number>;
 
 export function StopClient():Promise<void>;
