@@ -64,8 +64,8 @@
     border: 1px solid lightgray;
     max-height: 70vh;
     overflow-y: scroll;
-    padding: 10px;
     background: black;
+    overflow-x: clip;
 }
 
 .centeredTable {
@@ -75,15 +75,17 @@
 .msgEven {
     background: #130217;
     text-align: left;
+    padding: 10px;
 }
 
 .msgOdd {
     background: #4a0f58;
     text-align: left;
+    padding: 10px;
 }
 
 .usernameSection {
-    color: rgb(95, 95, 255);
+    color: rgb(249, 204, 241);
 }
 
 .messageSection {
@@ -100,4 +102,11 @@
 .sendButton {
     background: linear-gradient(to bottom, pink, white);
     vertical-align: top;
+    height: 11vh;
+    margin-left: 10px;
+    width: 15vw;
+}
+
+.logo {
+    width: 33%;
 }

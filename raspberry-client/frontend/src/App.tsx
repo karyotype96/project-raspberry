@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import './App.css';
+import logo from "./assets/images/logo.png"
 import {StartClient, StopClient, SendMessage, GetMessage, SendSignal, GetSignal} from "../wailsjs/go/main/App";
 import { Message } from './models/message_data';
 import { MessageBox } from './components/message_box';
@@ -55,30 +56,30 @@ function App() {
                     <tbody>
                         <tr>
                             <td colSpan={2}>
-                                <h2>{statusMessage}</h2>
+                                <img className="logo" src={logo} />
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style={{textAlign: "right", width: '50%'}}>
                                 Set username: 
                             </td>
-                            <td>
+                            <td style={{textAlign: "left", width: '50%'}}>
                                 <input type="text" value={username} onChange={updateUsername} />
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style={{textAlign: "right", width: '50%'}}>
                                 Server host: 
                             </td>
-                            <td>
+                            <td style={{textAlign: "left", width: '50%'}}>
                                 <input type="text" value={host} onChange={updateHost} />
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style={{textAlign: "right", width: '50%'}}>
                                 Server port: 
                             </td>
-                            <td>
+                            <td style={{textAlign: "left", width: '50%'}}>
                                 <input type="text" value={port} onChange={updatePort} />
                             </td>
                         </tr>
@@ -93,6 +94,11 @@ function App() {
             { clientStarted && <div>
                 <table className='centeredTable'>
                     <tbody>
+                        <tr>
+                            <td style={{textAlign: 'left'}} colSpan={2}>
+                                <img className="logo" src={logo} />
+                            </td>
+                        </tr>
                         <tr>
                             <td colSpan={2}>
                                 <MessageBox messages={messages}/>
