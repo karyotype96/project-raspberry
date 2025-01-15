@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import './App.css';
 import logo from "./assets/images/logo.png"
+import raspberry from "./assets/sounds/raspberry.mp3"
 import {StartClient, StopClient, SendMessage, GetMessage, SendSignal, GetSignal} from "../wailsjs/go/main/App";
 import { Message } from './models/message_data';
 import { MessageBox } from './components/message_box';
@@ -11,8 +12,11 @@ function App() {
     const [host, setHost] = useState('');
     const [port, setPort] = useState(20000);
     const [clientStarted, setClientStarted] = useState(false)
+    const [signalShown, setSignalShown] = useState(false)
     const [messages, setMessages] = useState(Array<Message>)
     const [messageToSend, setMessageToSend] = useState('')
+    const rasp = new Audio(raspberry);
+
     const updateUsername = (e: any) => setUsername(e.target.value)
     const updateHost = (e: any) => setHost(e.target.value)
     const updatePort = (e: any) => setPort(parseInt(e.target.value))
@@ -22,18 +26,24 @@ function App() {
             return
         }
 
-        let statusCode = await StartClient(username, host, port)
+        let statusCode = await StartClient(username, host, port);
         if (statusCode == 0){
             setClientStarted(true)
         }
+    }
+    const toggleSignalShown = () => {
+        setSignalShown(!signalShown);
     }
     const sendMessage = async () => {
         if (messageToSend == ''){
             return
         }
 
-        await SendMessage(messageToSend)
-        setMessageToSend('')
+        await SendMessage(messageToSend);
+        setMessageToSend('');
+    }
+    const sendSignal = async () => {
+        await SendSignal();
     }
 
     useEffect(() => {
@@ -45,7 +55,7 @@ function App() {
 
     useEffect(() => {
         GetSignal().then(() => {
-            // add logic to play sound
+            rasp.play();
         })
     })
 
@@ -55,7 +65,7 @@ function App() {
                 <table className='centeredTable'>
                     <tbody>
                         <tr>
-                            <td colSpan={2}>
+                            <td colSpan={2} style={{verticalAlign: "middle"}}>
                                 <img className="logo" src={logo} />
                             </td>
                         </tr>
@@ -95,8 +105,16 @@ function App() {
                 <table className='centeredTable'>
                     <tbody>
                         <tr>
-                            <td style={{textAlign: 'left'}} colSpan={2}>
-                                <img className="logo" src={logo} />
+                            <td style={{textAlign: 'left', verticalAlign: "middle"}} colSpan={2}>
+                                <img 
+                                    className="logo" 
+                                    src={logo} 
+                                    onClick={toggleSignalShown}
+                                />
+                                { signalShown && <button 
+                                    className="signalButton"
+                                    onClick={sendSignal}
+                                    >Send a raspberry!</button> }
                             </td>
                         </tr>
                         <tr>

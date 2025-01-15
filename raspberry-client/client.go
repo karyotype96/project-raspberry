@@ -65,9 +65,13 @@ func (c *Connector) handleConnection() {
 			log.Printf("Connection closed: %v\n", err)
 			break
 		}
+		if err == net.ErrWriteToConnected {
+			log.Printf("Attempting to write into closed connection: %v\n", err)
+			break
+		}
 		if err != nil {
 			log.Printf("Error reading data into buffer: %v\n", err)
-			continue
+			break
 		}
 
 		received := strings.Split(string(buffer), "\n")

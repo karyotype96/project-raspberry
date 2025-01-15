@@ -107,6 +107,14 @@
     width: 15vw;
 }
 
+.signalButton {
+    background: linear-gradient(to bottom, pink, white);
+    vertical-align: top;
+    margin-left: 10px;
+    width: 15vw;
+    height: 10vh;
+}
+
 .logo {
     width: 33%;
 }
